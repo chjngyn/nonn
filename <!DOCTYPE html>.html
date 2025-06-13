@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Photocard Pull</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #f0f0f0;
+      padding: 40px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    #pull-button {
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      background-color: #6c5ce7;
+      color: white;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+
+    #pull-button:hover {
+      background-color: #5a4bcf;
+    }
+
+    .card {
+      margin-top: 30px;
+      display: none;
+    }
+
+    .card img {
+      width: 250px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .rarity {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .common { color: gray; }
+    .rare { color: #0984e3; }
+    .ultra-rare { color: #e17055; }
+  </style>
+</head>
+<body>
+
+  <h1>🎴 Photocard Pull!</h1>
+  <button id="pull-button">Pull a Card</button>
+
+  <div class="card" id="card">
+    <img id="card-img" src="" alt="Photocard">
+    <div class="rarity" id="card-rarity"></div>
+  </div>
+
+  <script>
+    const cards = {
+      common: [
+        { name: 'Jungkook', image: 'https://i.imgur.com/0XrjR0n.jpg' },
+        { name: 'Jisoo', image: 'https://i.imgur.com/sv1y1V7.jpg' },
+        { name: 'Taehyung', image: 'https://i.imgur.com/Ph3VzUJ.jpg' }
+      ],
+      rare: [
+        { name: 'Lisa', image: 'https://i.imgur.com/xB8VSkX.jpg' },
+        { name: 'Hanni', image: 'https://i.imgur.com/XY60MFy.jpg' }
+      ],
+      ultraRare: [
+        { name: 'NewJeans Group', image: 'https://i.imgur.com/k9NjkAr.jpg' }
+      ]
+    };
+
+    function getRandomCard() {
+      const chance = Math.random();
+      let rarity, card;
+
+      if (chance < 0.05) {
+        rarity = 'ultraRare';
+      } else if (chance < 0.30) {
+        rarity = 'rare';
+      } else {
+        rarity = 'common';
+      }
+
+      const options = cards[rarity];
+      card = options[Math.floor(Math.random() * options.length)];
+
+      return { ...card, rarity };
+    }
+
+    document.getElementById('pull-button').addEventListener('click', () => {
+      const pulled = getRandomCard();
+
+      const img = document.getElementById('card-img');
+      const rarityText = document.getElementById('card-rarity');
+      const cardDiv = document.getElementById('card');
+
+      img.src = pulled.image;
+      rarityText.textContent = `${pulled.name} (${pulled.rarity.replace(/([A-Z])/g, ' $1')})`;
+      rarityText.className = `rarity ${pulled.rarity.toLowerCase()}`;
+      cardDiv.style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>
